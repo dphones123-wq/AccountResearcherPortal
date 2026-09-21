@@ -9,6 +9,8 @@ pipeline to avoid free-text rematching.
 
 ---
 
+Knowledge base: `docs/knowledge/` holds the migrated rationale and transcripts behind these rules. Use it when a rule looks arbitrary, but verify stale counts or schema names against the code/live system before acting.
+
 ## Commands
 
 ```bash
