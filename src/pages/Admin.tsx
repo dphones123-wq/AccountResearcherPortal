@@ -1968,12 +1968,12 @@ const SECTION_LABELS: Record<string, string> = {
 
 // --- Tab: Prompts ---
 const PROMPT_FILE_LABELS: Record<string, { label: string; path: string }> = {
-  module1_system: { label: 'M1 System Prompt', path: 'prompts/module1_system.txt' },
-  figma_expertise: { label: 'Figma Expertise', path: 'config/figma_expertise.md' },
-  company_pov: { label: 'POV Framework', path: 'config/company_pov.md' },
-  hook_research: { label: 'Hook Research', path: 'config/hook_research.md' },
-  persona_discovery: { label: 'Persona Discovery', path: 'config/persona_discovery.md' },
-  psp_system: { label: 'PSP Generator', path: 'prompts/psp_system.txt' },
+  module1_system: { label: 'M1 System Prompt', path: 'packs/figma/prompts/module1_system.txt' },
+  figma_expertise: { label: 'Figma Expertise', path: 'packs/figma/config/figma_expertise.md' },
+  company_pov: { label: 'POV Framework', path: 'packs/figma/config/company_pov.md' },
+  hook_research: { label: 'Hook Research', path: 'packs/figma/config/hook_research.md' },
+  persona_discovery: { label: 'Persona Discovery', path: 'packs/figma/config/persona_discovery.md' },
+  psp_system: { label: 'PSP Generator', path: 'packs/figma/prompts/psp_system.txt' },
 };
 
 function PromptsTab() {
@@ -1984,6 +1984,7 @@ function PromptsTab() {
   const [loading, setLoading] = useState(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
+  const [resolvedPath, setResolvedPath] = useState<string | null>(null);
 
   const loadFile = useCallback(async (filename: string) => {
     setLoading(true);
@@ -1996,6 +1997,7 @@ function PromptsTab() {
       setContent(data.content);
       setLoadedContent(data.content);
       setSha(data.sha);
+      setResolvedPath(typeof data.path === 'string' ? data.path : null);
     } catch (err: any) {
       setErrorMsg(err.message);
       setContent('');
@@ -2070,7 +2072,7 @@ function PromptsTab() {
         display: 'flex', alignItems: 'center', gap: 16, marginBottom: 12,
         fontSize: 12, color: 'var(--text-secondary)',
       }}>
-        <span style={{ fontFamily: 'var(--font-mono, monospace)', opacity: 0.7 }}>{meta?.path}</span>
+        <span style={{ fontFamily: 'var(--font-mono, monospace)', opacity: 0.7 }}>{resolvedPath ?? meta?.path}</span>
         <span>{charCount.toLocaleString()} chars</span>
         <span>~{tokenEst.toLocaleString()} tokens</span>
         <div style={{ flex: 1 }} />
