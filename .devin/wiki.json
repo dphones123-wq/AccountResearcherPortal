@@ -1,0 +1,44 @@
+{
+  "repo_notes": [
+    {
+      "content": "AccountResearcherPortal is the React/Vite/TypeScript front door of Account Researcher, a three-repo system that turns a Salesforce account plus a confirmed domain into an enterprise-sales brief for Figma account executives. Sibling repos: dphones123-wq/prospect-research (Node pipeline run by GitHub Actions: research, whitespace arithmetic, contacts, PDFs) and dphones123-wq/cloudflare-worker (authenticated API: account search, advisory domain check, admission control, submit/queue/dispatch, signed brief access). Document how the portal hands state to the Worker and pipeline, not just the UI in isolation. Handover context (handbook, decisions, gaps) lives in the owner's Google Drive folder 'Account Researcher / account-researcher-handover' and in docs/knowledge/ in this repo."
+    },
+    {
+      "content": "Rule 0 / identity is the most important concept and must be explained prominently: a submission is locked to a whitespace_accounts Salesforce ID (normalised to 18 chars downstream) plus a domain the AE explicitly confirms in src/components/AccountSearch.tsx. domain_confirmed=false is incomplete even with one domain. src/lib/domain-rank.ts ranks domains (Salesforce Website first, then apex/parent-child host, name match, record order) but ranking never authorises a choice. The advisory POST /domain-check annotates options only: it never picks, reorders or blocks, and a passing row deliberately shows no chip. History: a 2026-08-24 audit found 16 of 259 delivered briefs printed another company's commercial figures, which is why free-text matching was removed. New prospects send an explicit no-record declaration (no_whitespace_data / whitespace_status=no_record); a failed search is not no-record."
+    },
+    {
+      "content": "Unknown is not zero: src/lib/account-format.ts renders '-' for null and the figure for 0. no_record, unresolved and record-with-zero are distinct states; never describe missing ARR/seats/opportunity as $0. Copied helpers must change in the same commit as their siblings and be parity-checked from prospect-research: language-detect (portal, pipeline, worker), services-value, domain-rank and whitespace-total (portal and pipeline). Services value is counted once: max(ARR x 0.25, 125000) when any trigger fires; seat gaps are rounded then priced at Full Seat 90 and Dev Mode 35 per month x 12."
+    },
+    {
+      "content": "Platform facts to document accurately: BrowserRouter basename /AccountResearcherPortal with public/404.html rewriting deep links to ?path= for GitHub Pages (hash routing would break shared links). VITE_WORKER_BASE unset means the production Worker; it does not change the hardcoded Supabase project or StatusContext's separate Worker URL. Brief PDFs and debug events live in the private Supabase 'briefs' bucket and are read only through Worker routes /brief/:runId/:artifact and /pdf/:runId (short-lived signed URLs, legacy public URLs and bare object paths both accepted, other buckets and '..' refused). /brief-file is an outdated doc shorthand; /share-brief is retired (410). The public cc-reports bucket is for operator task reports only. Auth is Supabase magic link restricted to @figma.com; roles (ae, manager, admin) come from public.users. Some Admin actions have real effects: prompt edits commit to GitHub via the Worker, retry/regenerate dispatch runs, chat and feedback scoring call models."
+    },
+    {
+      "content": "Design rules: dense operational UI, dark theme default, CSS variables from src/index.css only, panels <= 8px radius, unfilled bordered chips, var(--accent) only for selection, no new lucide-react imports. Quality gate: npm run build and npx tsc --noEmit; npm test (vitest, 206 tests at the 2026-10-29 handover); npm run lint has a known red baseline (~195 problems) and is for before/after comparison only. When stating counts or dates from docs/knowledge, label them as historical snapshots."
+    }
+  ],
+  "pages": [
+    { "title": "System Overview: Portal, Worker and Pipeline", "purpose": "Explain Account Researcher end to end: the AE journey, what the portal owns versus cloudflare-worker and prospect-research, and the request/data flow from sign-in to a finished brief" },
+    { "title": "Getting Started, Build and Deploy", "purpose": "Commands (dev, build, tsc, test, lint baseline), environment variables including VITE_WORKER_BASE, local wrangler dev setup, and the GitHub Pages deploy workflow with the 404.html deep-link shim" },
+    { "title": "Routing, App Shell and Route Protection", "purpose": "App.tsx routes, BrowserRouter basename, Layout/Sidebar, ProtectedRoute and role-gated routes" },
+    { "title": "Rule 0: Account Identity and Domain Confirmation", "purpose": "Why the Salesforce ID lock and explicit domain confirmation exist, the identity-failure history, and how identity survives submit, queue and workflow dispatch" },
+    { "title": "AccountSearch and the Whitespace Account Card", "purpose": "AccountSearch.tsx two-question flow, the account card layout (owner, chips, four metric slots), null-versus-zero formatting and new-prospect declaration" },
+    { "title": "Domain Ranking and the Advisory Domain Check", "purpose": "domain-rank.ts ordering rules and why it avoids a public-suffix parser; POST /domain-check verdicts, chip rules and failure modes" },
+    { "title": "Submit Page and Submission Payload Contract", "purpose": "Submit.tsx readiness gating, submission.ts buildSubmitBody fields (lock, no-record, domain_source, language, contacts), feedback gate and credit checks" },
+    { "title": "Language Detection", "purpose": "language-detect.ts, automatic output language after domain confirmation, and its three-repo copies" },
+    { "title": "BriefView: Reading a Brief", "purpose": "How BriefView renders POV sections, whitespace and opportunity, value pyramid, contacts and hooks, sources and claim-audit findings, and how PDFs are fetched through the Worker" },
+    { "title": "Brief Chat and Section Feedback", "purpose": "Authenticated brief chat, SectionFeedback, overall feedback and the feedback gate that blocks new submissions" },
+    { "title": "MyBriefs and Run Progress", "purpose": "Run list, statuses, StatusContext polling, progress and queue position, retry and regenerate actions" },
+    { "title": "Territory and Team Views", "purpose": "Territory page aggregation, freshness badges, manager team views and brief assignment" },
+    { "title": "Admin Dashboard", "purpose": "Admin tabs (users, runs, failed runs, feedback, queue, credits, prompts), and the real side effects of each admin action" },
+    { "title": "Preview Harness and Pipeline Debug Views", "purpose": "/preview/account-search admin harness, debug/post-it views and what they can and cannot call" },
+    { "title": "Supabase Client, Auth and Roles", "purpose": "supabase.ts, AuthContext magic-link flow, @figma.com restriction, users table roles and credits, RLS caveats, ThemeContext" },
+    { "title": "Worker API Surface Used by the Portal", "purpose": "Every Worker route the portal calls grouped by effect (read, advisory, run control, admin, retired) and private brief storage access rules" },
+    { "title": "Commercial Data: Whitespace, Services and Totals", "purpose": "whitespace-total.ts and services-value.ts arithmetic, unknown versus zero, and parity with the pipeline copies" },
+    { "title": "Duplicated Helpers and Parity Checks", "purpose": "The four copied helpers, which repos hold each copy, and the parity scripts to run after changes" },
+    { "title": "Design System and UI Rules", "purpose": "index.css tokens, dark/light themes, chip and panel conventions, icon rule and mobile fit requirements" },
+    { "title": "Testing and Screenshot Harness", "purpose": "Vitest unit/component tests, harness/ screenshot runner and fixtures, lint baseline" },
+    { "title": "Database Schema and SQL Files", "purpose": "supabase-setup.sql, supabase-briefs-table.sql, supabase/ functions, tables the portal reads, and known gaps in checked-in SQL" },
+    { "title": "History, Decisions and Knowledge Base", "purpose": "Key decisions and incidents from docs/knowledge (identity audit, private briefs, retired sharing, account picker redesign) and how to search the session/task archive" },
+    { "title": "Glossary", "purpose": "Define AE, whitespace, ARR, Rule 0, domain confirmation, no_record, unresolved, POV, ICP fit, value pyramid, FAS, feedback gate, credits, run, attempt, brief" }
+  ]
+}
