@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import Banner from '../components/Banner';
 import usePageTitle from '../hooks/usePageTitle';
+import { DEPLOYMENT, SELLER, isAllowedEmail } from '../lib/deployment';
 
 export default function Login() {
   usePageTitle('Login');
@@ -21,8 +22,10 @@ export default function Login() {
     e.preventDefault();
     setBanner(null);
 
-    if (!email.endsWith('@figma.com')) {
-      setBanner({ type: 'error', msg: 'Only @figma.com emails are allowed.' });
+    if (!isAllowedEmail(email)) {
+      setBanner({ type: 'error', msg: DEPLOYMENT.allowedEmailDomains.length
+        ? `Only ${DEPLOYMENT.allowedEmailDomains.map((d) => '@' + d).join(', ')} emails are allowed.`
+        : 'Sign-in is not configured for this deployment.' });
       return;
     }
 
@@ -55,7 +58,7 @@ export default function Login() {
           M4S Research
         </div>
         <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginTop: 4 }}>
-          Prospect research for Figma AEs
+          Prospect research for {SELLER} AEs
         </div>
 
         <div style={{ height: 1, background: 'var(--border)', margin: '24px 0' }} />
@@ -66,7 +69,7 @@ export default function Login() {
           </label>
           <input
             type="email"
-            placeholder="you@figma.com"
+            placeholder={`you@${DEPLOYMENT.allowedEmailDomains[0] ?? 'company.com'}`}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required

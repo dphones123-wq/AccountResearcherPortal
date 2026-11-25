@@ -5,6 +5,7 @@ import { parseDomainInput } from '../lib/domain';
 import { rankDomains, reasonText, type RankedDomain } from '../lib/domain-rank';
 import { formatMoney, formatCount } from '../lib/account-format';
 import { salesforceAccountUrl } from '../lib/salesforce-url';
+import { SELLER } from '../lib/deployment';
 
 /**
  * AccountSearch — type-ahead over the real whitespace book.
@@ -1963,7 +1964,7 @@ export default function AccountSearch({
               </div>
               <div style={{ fontSize: T.tiny, color: 'var(--text-tertiary)', marginTop: 8, lineHeight: 1.6 }}>
                 Only accounts currently in the whitespace book are searchable. A company
-                Figma has no Salesforce account for will not appear here — that is the
+                {SELLER} has no Salesforce account for will not appear here — that is the
                 answer, not a search failure.
               </div>
               {allowNewProspect && (
