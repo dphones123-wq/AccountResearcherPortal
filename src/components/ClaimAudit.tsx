@@ -24,6 +24,7 @@
 import { useEffect, useState } from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { SELLER } from '../lib/deployment';
 
 export interface ClaimAuditFinding {
   id: number;
@@ -135,19 +136,19 @@ export function useClaimAuditCounts(runIds: string[]) {
 
 /** Plain-English name for each detector, so the reader is not shown a slug. */
 const PATTERN_LABELS: Record<string, string> = {
-  non_customer:       'States the account is not a Figma customer',
+  non_customer:       `States the account is not a ${SELLER} customer`,
   new_logo:           'Describes the account as a new logo',
   greenfield:         'Describes the account as greenfield',
   untouched:          'Describes the account as untouched or untapped',
   cold_account:       'Describes the account as cold',
-  no_figma_presence:  'Asserts there is no Figma presence',
-  does_not_use_figma: 'States the account does not use Figma',
-  not_using_figma:    'States the account is not using Figma',
-  zero_figma:         'States zero Figma spend or seats',
-  figma_seat_count:   'Quotes a Figma seat or licence count',
-  figma_seats_number: 'Quotes a Figma seat or licence count',
-  figma_arr:          'Quotes a Figma ARR or spend figure',
-  arr_near_figma:     'Quotes a Figma ARR or spend figure',
+  no_figma_presence:  `Asserts there is no ${SELLER} presence`,
+  does_not_use_figma: `States the account does not use ${SELLER}`,
+  not_using_figma:    `States the account is not using ${SELLER}`,
+  zero_figma:         `States zero ${SELLER} spend or seats`,
+  figma_seat_count:   `Quotes a ${SELLER} seat or licence count`,
+  figma_seats_number: `Quotes a ${SELLER} seat or licence count`,
+  figma_arr:          `Quotes a ${SELLER} ARR or spend figure`,
+  arr_near_figma:     `Quotes a ${SELLER} ARR or spend figure`,
   whitespace_value:   'Quotes a whitespace opportunity value',
   penetration_pct:    'Quotes a seat penetration or occupancy percentage',
 
@@ -157,9 +158,9 @@ const PATTERN_LABELS: Record<string, string> = {
   // them these three rendered as 'unsupported figure' — the slug with its
   // underscores swapped for spaces, which reads like a category rather than a
   // finding.
-  unsupported_figure: 'Quotes a Figma figure that is not in our record',
-  rounded_figure:     'Rounds or restates a Figma figure from our record',
-  hedged_figure:      'Hedges a Figma figure our record states exactly',
+  unsupported_figure: `Quotes a ${SELLER} figure that is not in our record`,
+  rounded_figure:     `Rounds or restates a ${SELLER} figure from our record`,
+  hedged_figure:      `Hedges a ${SELLER} figure our record states exactly`,
 };
 
 const SURFACE_LABELS: Record<string, string> = {
@@ -207,7 +208,7 @@ export function ClaimAuditBadge({ count, compact = false }: { count: number; com
   return (
     <span
       title={
-        `${count} Figma claim${count === 1 ? '' : 's'} in this brief could not be matched ` +
+        `${count} ${SELLER} claim${count === 1 ? '' : 's'} in this brief could not be matched ` +
         `to our record of the account. Open the brief for detail.`
       }
       style={{
@@ -309,41 +310,41 @@ function bannerCopy(variant: ClaimAuditVariant, n: number): {
         // given Figma's own record for this account and the brief quoted a
         // number that is not in it. Calling that unsourced tells the AE the
         // account has no data, which is the error this banner caused.
-        headline: `${n} figure${s} that do${n === 1 ? 'es' : ''} not match Figma’s record for this account`,
-        lead: 'The pipeline supplied this brief with Figma’s own commercial record for this '
+        headline: `${n} figure${s} that do${n === 1 ? 'es' : ''} not match ${SELLER}’s record for this account`,
+        lead: `The pipeline supplied this brief with ${SELLER}’s own commercial record for this `
           + `account, so its seat, ARR and usage figures are known. ${sentences} a figure that `
           + 'does not appear in that record — invented, rounded, or hedged into something the '
           + 'record does not say. ',
-        footnote: 'The account’s real figures are in the Figma usage section of this brief. '
+        footnote: `The account’s real figures are in the ${SELLER} usage section of this brief. `
           + 'A mismatch here is the brief contradicting itself, not a gap in our data.',
       };
     case 'unknown':
       return {
-        headline: `${n} unsourced claim${s} about this account’s Figma usage`,
+        headline: `${n} unsourced claim${s} about this account’s ${SELLER} usage`,
         lead: 'The whitespace lookup for this account did not complete, so the pipeline had no '
-          + `Figma usage, seat or ARR data when this brief was written. ${sentences} something `
+          + `${SELLER} usage, seat or ARR data when this brief was written. ${sentences} something `
           + 'it had no basis for. ',
         footnote: 'A failed lookup is not evidence about the account either way. It may well be '
           + 'in the whitespace book; we were unable to ask.',
       };
     case 'no_record':
       return {
-        headline: `${n} unsourced claim${s} about this account’s Figma usage`,
-        lead: 'This account has no record in the whitespace book, so the pipeline had no Figma '
+        headline: `${n} unsourced claim${s} about this account’s ${SELLER} usage`,
+        lead: `This account has no record in the whitespace book, so the pipeline had no ${SELLER} `
           + `usage, seat or ARR data when this brief was written. ${sentences} something it had `
           + 'no basis for. ',
         footnote: 'Absence from the whitespace book is not evidence that the account does not use '
-          + 'Figma. The book covers a filtered set of accounts; a company outside it can hold Pro '
+          + `${SELLER}. The book covers a filtered set of accounts; a company outside it can hold Pro `
           + 'teams, free signups, or seats recorded under another domain.',
       };
     case 'indeterminate':
       return {
         // Deliberately makes no claim about the whitespace book in either
         // direction, because in this branch we do not know which is true.
-        headline: `${n} flagged claim${s} about this account’s Figma usage`,
+        headline: `${n} flagged claim${s} about this account’s ${SELLER} usage`,
         lead: `The claim audit flagged ${n === 1 ? 'this sentence' : 'these sentences'}, but the `
           + 'reason it flagged them could not be determined from the stored findings. ',
-        footnote: 'Check the figures against the Figma usage section of this brief before '
+        footnote: `Check the figures against the ${SELLER} usage section of this brief before `
           + 'repeating them.',
       };
   }

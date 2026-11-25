@@ -11,6 +11,7 @@ import useWindowWidth from '../hooks/useWindowWidth';
 import { ArrowLeft, FileText, X, ChevronDown, ExternalLink, Send, Trash2, Activity, RefreshCw, Paperclip, ClipboardList, Copy, Check, MoreHorizontal, Mail } from 'lucide-react';
 import { isMeaningfulFeedback } from '../lib/feedback';
 import { ClaimAuditBanner, useClaimAuditFindings } from '../components/ClaimAudit';
+import { SELLER } from '../lib/deployment';
 // DOMPurify removed — CitedProse now renders React elements instead of innerHTML
 
 /* ------------------------------------------------------------------ */
@@ -144,7 +145,7 @@ const LABELS: Record<string, Record<LabelKey, string>> = {
     section_org_structure: 'Organisational Structure',
     section_why_anything: 'Why Anything',
     section_why_now: 'Why Now',
-    section_why_figma: 'Why Figma',
+    section_why_figma: `Why ${SELLER}`,
     section_whitespace: 'Whitespace & Opportunity',
     section_value_pyramid: 'Value Pyramid',
     section_digital_products: 'Digital Products',
@@ -201,7 +202,7 @@ const LABELS: Record<string, Record<LabelKey, string>> = {
     ws_arr_floor_note: '25% ARR floor, minimum $125K — one figure for the account, counted once however many triggers fired above.',
     ws_total_whitespace_footer: 'Total Whitespace — seats + Governance+ + services',
     ws_no_record_heading: 'No whitespace record for this account',
-    ws_no_record_body: 'This account is not in the Figma whitespace book, so its seat counts, current ARR and opportunity value are unknown — not zero. Nothing here should be read as saying the opportunity is small; it has never been measured. Sizing becomes available once the account is scored.',
+    ws_no_record_body: `This account is not in the ${SELLER} whitespace book, so its seat counts, current ARR and opportunity value are unknown — not zero. Nothing here should be read as saying the opportunity is small; it has never been measured. Sizing becomes available once the account is scored.`,
     ws_zero_heading: 'Measured: no open whitespace',
     ws_zero_body: 'This account has a whitespace record, and every opportunity bucket computed to zero — seats fully licensed against the addressable population, no tier upgrade available, and no services trigger fired. This is a measured zero, not missing data.',
     ws_unknown_heading: 'Whitespace could not be resolved',
@@ -252,7 +253,7 @@ const LABELS: Record<string, Record<LabelKey, string>> = {
     fb_about: 'About',
     fb_why_anything: 'Why Anything',
     fb_why_now: 'Why Now',
-    fb_why_figma: 'Why Figma',
+    fb_why_figma: `Why ${SELLER}`,
     fb_whitespace: 'Whitespace & Opportunity',
     fb_value_pyramid: 'Value Pyramid',
     fb_contact_matrix: 'Key Contacts',
@@ -276,7 +277,7 @@ const LABELS: Record<string, Record<LabelKey, string>> = {
     section_org_structure: 'Structure organisationnelle',
     section_why_anything: 'Pourquoi agir',
     section_why_now: 'Pourquoi maintenant',
-    section_why_figma: 'Pourquoi Figma',
+    section_why_figma: `Pourquoi ${SELLER}`,
     section_whitespace: 'Whitespace & Opportunit\u00E9',
     section_value_pyramid: 'Pyramide de valeur',
     section_digital_products: 'Produits num\u00E9riques',
@@ -333,7 +334,7 @@ const LABELS: Record<string, Record<LabelKey, string>> = {
     ws_arr_floor_note: 'Plancher 25% ARR, minimum 125K$ \u2014 un seul montant pour le compte, compt\u00E9 une fois quel que soit le nombre de d\u00E9clencheurs ci-dessus.',
     ws_total_whitespace_footer: 'Whitespace total \u2014 si\u00E8ges + Governance+ + services',
     ws_no_record_heading: 'Aucune fiche whitespace pour ce compte',
-    ws_no_record_body: "Ce compte n'est pas r\u00E9pertori\u00E9 dans le whitespace Figma : ses licences, son ARR actuel et sa valeur d'opportunit\u00E9 sont donc inconnus \u2014 et non nuls. Rien ici ne signifie que l'opportunit\u00E9 est faible ; elle n'a jamais \u00E9t\u00E9 mesur\u00E9e.",
+    ws_no_record_body: `Ce compte n'est pas r\u00E9pertori\u00E9 dans le whitespace ${SELLER} : ses licences, son ARR actuel et sa valeur d'opportunit\u00E9 sont donc inconnus \u2014 et non nuls. Rien ici ne signifie que l'opportunit\u00E9 est faible ; elle n'a jamais \u00E9t\u00E9 mesur\u00E9e.`,
     ws_zero_heading: 'Mesur\u00E9 : aucun whitespace ouvert',
     ws_zero_body: "Ce compte poss\u00E8de une fiche whitespace et chaque poste d'opportunit\u00E9 est ressorti \u00E0 z\u00E9ro : licences enti\u00E8rement attribu\u00E9es sur la population adressable, aucune mont\u00E9e de gamme disponible, aucun d\u00E9clencheur de services. Un z\u00E9ro mesur\u00E9, non des donn\u00E9es manquantes.",
     ws_unknown_heading: 'Whitespace non r\u00E9solu',
@@ -384,7 +385,7 @@ const LABELS: Record<string, Record<LabelKey, string>> = {
     fb_about: '\u00C0 propos',
     fb_why_anything: 'Pourquoi agir',
     fb_why_now: 'Pourquoi maintenant',
-    fb_why_figma: 'Pourquoi Figma',
+    fb_why_figma: `Pourquoi ${SELLER}`,
     fb_whitespace: 'Whitespace & Opportunit\u00E9',
     fb_value_pyramid: 'Pyramide de valeur',
     fb_contact_matrix: 'Contacts cl\u00E9s',
@@ -533,7 +534,7 @@ const FEEDBACK_SECTIONS = [
   { id: 'about',             label: 'About',                    icon: '\u25A4' },
   { id: 'why_anything',      label: 'Why Anything',             icon: '\u25C8' },
   { id: 'why_now',           label: 'Why Now',                  icon: '\u25F7' },
-  { id: 'why_figma',         label: 'Why Figma',                icon: '\u25C6' },
+  { id: 'why_figma',         label: `Why ${SELLER}`,                icon: '\u25C6' },
   { id: 'whitespace',        label: 'Whitespace & Opportunity', icon: '\u25EB' },
   { id: 'value_pyramid',     label: 'Value Pyramid',            icon: '\u25B3' },
   { id: 'contact_matrix',    label: 'Key Contacts',             icon: '\u25C9' },
@@ -973,7 +974,7 @@ function CitedProse({ text, sources, style, onCitationClick }: {
     if (match[1] === undefined) {
       parts.push(
         <span key={key++} style={{ color: COLORS.faint, fontSize: '0.72em', whiteSpace: 'nowrap' }}>
-          [Figma internal whitespace analysis]
+          [{SELLER} internal whitespace analysis]
         </span>
       );
       lastIndex = match.index + match[0].length;
@@ -2067,7 +2068,7 @@ function WhyFigmaSection({ pov, sources, feedbackNode, onCitationClick, market }
       {di && (
         (() => {
           const hasConfirmedFigma = (di.confirmed_tools || []).some((t: string) =>
-            (typeof t === 'string' ? t : '').toLowerCase().includes('figma')
+            (typeof t === 'string' ? t : '').toLowerCase().includes(SELLER.toLowerCase())
           );
           const namedSystem = (di.named_systems || [])[0];
           const systemName = typeof namedSystem === 'string' ? namedSystem : namedSystem?.name;
@@ -2075,7 +2076,7 @@ function WhyFigmaSection({ pov, sources, feedbackNode, onCitationClick, market }
           if (!hasConfirmedFigma && !systemName) return null;
 
           const parts: string[] = [];
-          if (hasConfirmedFigma) parts.push(market === 'fr' ? 'Figma confirm\u00E9 en utilisation active' : 'Figma confirmed in active use');
+          if (hasConfirmedFigma) parts.push(market === 'fr' ? `${SELLER} confirm\u00E9 en utilisation active` : `${SELLER} confirmed in active use`);
           if (systemName) parts.push(`${market === 'fr' ? 'Design system' : 'Design system'}: ${systemName}`);
 
           return (

@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { Users, Activity, Heart, BarChart3, ExternalLink, Cpu, FileText, X, RefreshCw, Trash2, UserPlus, Check, RotateCcw, Link, MessageSquare, Download, Mail, Eye, UserCheck } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { getDomainCheck, setDomainCheck, DOMAIN_CHECK_DEFAULT } from '../lib/preview-settings';
+import { DEPLOYMENT, SELLER } from '../lib/deployment';
 
 type Tab = 'users' | 'runs' | 'health' | 'credits' | 'api-credits' | 'assign' | 'feedback' | 'prompts' | 'preview';
 
@@ -1962,18 +1963,21 @@ function AssignBriefsTab() {
 
 const SECTION_LABELS: Record<string, string> = {
   about: 'About', why_anything: 'Why Anything', why_now: 'Why Now',
-  why_figma: 'Why Figma', whitespace: 'Whitespace', value_pyramid: 'Value Pyramid',
+  why_figma: `Why ${SELLER}`, whitespace: 'Whitespace', value_pyramid: 'Value Pyramid',
   contact_matrix: 'Contact Matrix', research_deep_dive: 'Research Deep Dive',
 };
 
 // --- Tab: Prompts ---
 const PROMPT_FILE_LABELS: Record<string, { label: string; path: string }> = {
-  module1_system: { label: 'M1 System Prompt', path: 'packs/figma/prompts/module1_system.txt' },
-  figma_expertise: { label: 'Figma Expertise', path: 'packs/figma/config/figma_expertise.md' },
-  company_pov: { label: 'POV Framework', path: 'packs/figma/config/company_pov.md' },
-  hook_research: { label: 'Hook Research', path: 'packs/figma/config/hook_research.md' },
-  persona_discovery: { label: 'Persona Discovery', path: 'packs/figma/config/persona_discovery.md' },
-  psp_system: { label: 'PSP Generator', path: 'packs/figma/prompts/psp_system.txt' },
+  // Paths are placeholders until the Worker returns the path it resolved from
+  // brains/<brain>/brain.json. `figma_expertise` is the Worker's legacy key for
+  // the brain's `expertise` file; kept so either Worker version answers.
+  module1_system: { label: 'M1 System Prompt', path: `brains/${DEPLOYMENT.brain}/prompts/module1_system.txt` },
+  figma_expertise: { label: `${SELLER} Expertise`, path: `brains/${DEPLOYMENT.brain}/config/${DEPLOYMENT.brain}_expertise.md` },
+  company_pov: { label: 'POV Framework', path: `brains/${DEPLOYMENT.brain}/config/company_pov.md` },
+  hook_research: { label: 'Hook Research', path: `brains/${DEPLOYMENT.brain}/config/hook_research.md` },
+  persona_discovery: { label: 'Persona Discovery', path: `brains/${DEPLOYMENT.brain}/config/persona_discovery.md` },
+  psp_system: { label: 'PSP Generator', path: `brains/${DEPLOYMENT.brain}/prompts/psp_system.txt` },
 };
 
 function PromptsTab() {

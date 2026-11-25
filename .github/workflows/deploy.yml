@@ -30,6 +30,12 @@ jobs:
 
       - run: npm ci
       - run: npm run build
+        env:
+          # Deployment config (src/lib/deployment.ts). Unset = the Figma deployment.
+          VITE_BRAIN: ${{ vars.VITE_BRAIN }}
+          VITE_SELLER_NAME: ${{ vars.VITE_SELLER_NAME }}
+          VITE_ALLOWED_EMAIL_DOMAINS: ${{ vars.VITE_ALLOWED_EMAIL_DOMAINS }}
+          VITE_SALESFORCE_LIGHTNING_HOST: ${{ vars.VITE_SALESFORCE_LIGHTNING_HOST }}
 
       - uses: actions/configure-pages@v4
 

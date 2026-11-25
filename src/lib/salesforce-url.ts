@@ -1,3 +1,5 @@
+import { DEPLOYMENT } from './deployment';
+
 /**
  * Links into Figma's Salesforce org.
  *
@@ -28,11 +30,11 @@
 /**
  * The Lightning host for the org, per the probe above.
  *
- * Hardcoded rather than configured: there is one Salesforce org behind this
- * portal, its My Domain is not going to change without somebody noticing, and a
- * `VITE_` variable that nobody sets is a link that silently breaks.
+ * Per deployment (VITE_SALESFORCE_LIGHTNING_HOST, see ./deployment.ts). The
+ * Figma deployment defaults to the host above; any other deployment with the
+ * variable unset gets no link rather than a link into Figma's org.
  */
-const LIGHTNING_HOST = 'https://figma.lightning.force.com';
+const LIGHTNING_HOST = DEPLOYMENT.salesforceLightningHost;
 
 /**
  * A Salesforce account ID, 15 or 18 characters.
@@ -57,6 +59,6 @@ const ACCOUNT_ID = /^001[A-Za-z0-9]{12}([A-Za-z0-9]{3})?$/;
  */
 export function salesforceAccountUrl(accountId: string | null | undefined): string | null {
   const id = String(accountId ?? '').trim();
-  if (!ACCOUNT_ID.test(id)) return null;
+  if (!LIGHTNING_HOST || !ACCOUNT_ID.test(id)) return null;
   return `${LIGHTNING_HOST}/lightning/r/Account/${id}/view`;
 }
